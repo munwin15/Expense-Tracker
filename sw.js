@@ -1,6 +1,6 @@
 const CACHE = 'expense-tracker-v1';
 const FILES = [
-  './expense-tracker.html',
+  './index.html',
   './manifest.json',
   './icon.svg'
 ];

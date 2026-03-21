@@ -80,6 +80,67 @@
     .edit-form .row { margin-bottom: 0; }
     .edit-form .form-group { margin-bottom: 8px; }
     .edit-actions { display: flex; gap: 8px; margin-top: 10px; }
+    /* Collapsible sections */
+    .section-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; margin-bottom: 14px; }
+    .section-header h2 { margin-bottom: 0; }
+    .toggle-icon { font-size: 0.75rem; color: #aaa; transition: transform 0.2s; display: inline-block; }
+    .collapsed .toggle-icon { transform: rotate(-90deg); }
+    .collapsible-body { overflow: hidden; transition: max-height 0.25s ease, opacity 0.25s ease; max-height: 2000px; opacity: 1; }
+    .collapsed .collapsible-body { max-height: 0; opacity: 0; }
+
+    /* ── Mobile ────────────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .container { padding: 12px; }
+      h1 { font-size: 1.3rem; margin-bottom: 16px; }
+      h2 { font-size: 0.85rem; margin-bottom: 10px; }
+
+      /* Stack all two-column grids */
+      .top-grid { grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }
+
+      /* Stack form rows vertically */
+      .row { flex-direction: column; gap: 0; }
+      .row .form-group { flex: unset; }
+
+      /* Cards */
+      .card { padding: 14px; border-radius: 10px; margin-bottom: 12px; }
+
+      /* Toolbar */
+      .toolbar { flex-direction: column; gap: 8px; margin-bottom: 12px; }
+      .toolbar .btn { width: 100%; text-align: center; padding: 12px; }
+
+      /* Bigger touch targets for action buttons */
+      .btn-danger, .btn-edit { padding: 8px 14px; font-size: 0.82rem; }
+      .btn-primary { padding: 12px; font-size: 0.95rem; }
+
+      /* Inputs */
+      input, select { padding: 11px 12px; font-size: 1rem; }
+
+      /* Tables — allow horizontal scroll, tighten padding */
+      th { padding: 8px 10px; font-size: 0.72rem; }
+      td { padding: 8px 10px; font-size: 0.82rem; }
+
+      /* Forecast — show as cards instead of wide table */
+      #forecastBody tr.payday-row { display: block; border-radius: 10px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+      #forecastBody tr.payday-row td { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #dce8f7; padding: 10px 14px; font-size: 0.85rem; }
+      #forecastBody tr.payday-row td:first-child { border-left: none; background: #2c82c9; color: white; font-weight: 700; font-size: 0.9rem; }
+      #forecastBody tr.payday-row td::before { content: attr(data-label); font-size: 0.72rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.4px; margin-right: 10px; white-space: nowrap; flex-shrink: 0; }
+      #forecastBody tr.payday-row td:first-child::before { color: rgba(255,255,255,0.7); }
+      #forecastBody tr.payday-row td:last-child { border-bottom: none; font-size: 1rem; }
+      #forecastBody .empty-row { display: table-row; }
+      #forecastBody .empty-row td { display: table-cell; }
+
+      /* Edit form rows stay stacked */
+      .edit-form .row { flex-direction: column; }
+      .edit-actions { flex-direction: column; }
+      .edit-actions .btn-cancel { text-align: center; }
+
+      /* Income input wider on mobile */
+      .income-input { width: 90px; font-size: 1rem; }
+
+      /* Forecast header */
+      .forecast-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .forecast-header select { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -159,43 +220,53 @@
 
     <!-- Expenses & Paydays Tables -->
     <div class="top-grid" style="margin-bottom: 20px;">
-      <div class="card">
-        <h2>Expenses</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Account</th>
-                <th>Recurrence</th>
-                <th>When</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="expensesBody">
-              <tr class="empty-row"><td colspan="6">No expenses added yet</td></tr>
-            </tbody>
-          </table>
+      <div class="card" id="expensesCard">
+        <div class="section-header" onclick="toggleSection('expensesCard')">
+          <h2>Expenses</h2>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Amount</th>
+                  <th>Account</th>
+                  <th>Recurrence</th>
+                  <th>When</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="expensesBody">
+                <tr class="empty-row"><td colspan="6">No expenses added yet</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <div class="card">
-        <h2>Paydays</h2>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Label</th>
-                <th>Income</th>
-                <th>Recurrence</th>
-                <th>Next Date</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="paydaysBody">
-              <tr class="empty-row"><td colspan="5">No paydays added yet</td></tr>
-            </tbody>
-          </table>
+      <div class="card" id="paydaysCard">
+        <div class="section-header" onclick="toggleSection('paydaysCard')">
+          <h2>Paydays</h2>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="collapsible-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Label</th>
+                  <th>Income</th>
+                  <th>Recurrence</th>
+                  <th>Next Date</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="paydaysBody">
+                <tr class="empty-row"><td colspan="5">No paydays added yet</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -670,12 +741,12 @@
 
         return `
           <tr class="payday-row">
-            <td>${fmt(row.date)}</td>
-            <td>${esc(row.label)}</td>
-            <td>${incomeInput}</td>
-            <td>${prevCell}</td>
-            <td>${expCell}</td>
-            <td class="${bClass} balance-total">${row.balance >= 0 ? '+' : ''}$${row.balance.toFixed(2)}</td>
+            <td data-label="Payday">${fmt(row.date)}</td>
+            <td data-label="Source">${esc(row.label)}</td>
+            <td data-label="Income">${incomeInput}</td>
+            <td data-label="Remaining">${prevCell}</td>
+            <td data-label="Expenses">${expCell}</td>
+            <td data-label="Net Balance" class="${bClass} balance-total">${row.balance >= 0 ? '+' : ''}$${row.balance.toFixed(2)}</td>
           </tr>`
       }).join('');
     }
@@ -795,6 +866,22 @@
         .map((m,i)=>`<option value="${i}"${i==sel?' selected':''}>${m}</option>`).join('');
     }
 
+    // ── Collapsible Sections ───────────────────────────────────────────────
+    function toggleSection(id) {
+      const card = document.getElementById(id);
+      card.classList.toggle('collapsed');
+      const collapsed = JSON.parse(localStorage.getItem('et_collapsed') || '{}');
+      collapsed[id] = card.classList.contains('collapsed');
+      localStorage.setItem('et_collapsed', JSON.stringify(collapsed));
+    }
+
+    function restoreCollapsed() {
+      const collapsed = JSON.parse(localStorage.getItem('et_collapsed') || '{}');
+      Object.keys(collapsed).forEach(id => {
+        if (collapsed[id]) document.getElementById(id)?.classList.add('collapsed');
+      });
+    }
+
     // ── Export / Import ────────────────────────────────────────────────────
     function exportData() {
       const data = { expenses, paydays, incomeOverrides, exportedAt: new Date().toISOString() };
@@ -835,6 +922,7 @@
     // ── Init ───────────────────────────────────────────────────────────────
     document.getElementById('paydayNextDate').value = todayStr();
     updateExpenseDateFields();
+    restoreCollapsed();
     renderExpenses();
     renderPaydays();
     renderForecast();

@@ -2,7 +2,7 @@
   "name": "Expense Tracker & Forecaster",
   "short_name": "Expenses",
   "description": "Track and forecast your recurring expenses and paydays",
-  "start_url": "./expense-tracker.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
