@@ -550,13 +550,26 @@
     }
 
     // ── Render Expenses Table ──────────────────────────────────────────────
+    function expenseSortKey(e) {
+      switch (e.recurrence) {
+        case 'monthly':   return e.dayOfMonth;
+        case 'one-time':  return new Date(e.date + 'T00:00:00').getDate();
+        case 'weekly':    return 100 + e.dayOfWeek;
+        case 'bi-weekly': return 100 + e.dayOfWeek;
+        case 'daily':     return 200;
+        case 'yearly':    return 300 + e.month;
+        default:          return 999;
+      }
+    }
+
     function renderExpenses() {
       const tbody = document.getElementById('expensesBody');
       if (!expenses.length) {
         tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No expenses added yet</td></tr>';
         return;
       }
-      tbody.innerHTML = expenses.map(e => {
+      const sorted = [...expenses].sort((a, b) => expenseSortKey(a) - expenseSortKey(b));
+      tbody.innerHTML = sorted.map(e => {
         if (e.id === editingExpenseId) return editRow(e);
         return `
           <tr>
