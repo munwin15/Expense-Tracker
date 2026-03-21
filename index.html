@@ -355,23 +355,9 @@
     const db   = firebase.firestore();
     let unsubscribeSnapshot = null;
 
-    // Handle redirect result when page loads after Google redirects back
-    auth.getRedirectResult().then(result => {
-      if (result && result.user) console.log('Redirect sign-in complete:', result.user.email);
-    }).catch(err => {
-      if (err.code !== 'auth/no-redirect-operation') alert('Sign in failed: ' + err.message);
-    });
-
     function signIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
-      const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      if (isPWA || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
-          auth.signInWithRedirect(provider);
-        });
-      } else {
-        auth.signInWithPopup(provider).catch(err => alert('Sign in failed: ' + err.message));
-      }
+      auth.signInWithPopup(provider).catch(err => alert('Sign in failed: ' + err.message));
     }
 
     function signOut() {
