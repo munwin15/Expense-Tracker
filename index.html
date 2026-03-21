@@ -127,19 +127,8 @@
       /* Forecast — horizontal scroll on mobile */
       #forecastTableWrap { overflow-x: auto; }
 
-      /* Expenses & Paydays — card layout */
-      #expensesBody tr, #paydaysBody tr { display: block; border-radius: 10px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #e8eaed; }
-      #expensesBody td, #paydaysBody td { display: flex; justify-content: space-between; align-items: center; padding: 9px 14px; border-bottom: 1px solid #f0f1f3; background: white; font-size: 0.88rem; }
-      #expensesBody td:first-child, #paydaysBody td:first-child { background: #f7f8fa; font-weight: 700; font-size: 0.92rem; border-bottom: 2px solid #e8eaed; }
-      #expensesBody td:last-child, #paydaysBody td:last-child { border-bottom: none; justify-content: flex-end; gap: 8px; }
-      #expensesBody td::before, #paydaysBody td::before { content: attr(data-label); font-size: 0.7rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.4px; margin-right: 10px; white-space: nowrap; flex-shrink: 0; }
-      #expensesBody td:first-child::before, #paydaysBody td:first-child::before { content: ''; }
-      #expensesBody td:last-child::before, #paydaysBody td:last-child::before { content: ''; }
-      #expensesTable thead, #paydaysTable thead { display: none; }
-      #expensesBody .empty-row, #paydaysBody .empty-row { display: table-row; box-shadow: none; border: none; }
-      #expensesBody .empty-row td, #paydaysBody .empty-row td { display: table-cell; }
-      #expensesBody .edit-row, #paydaysBody .edit-row { box-shadow: none; }
-      #expensesBody .edit-row td, #paydaysBody .edit-row td { display: block; border-bottom: none; }
+      /* Expenses & Paydays — horizontal scroll on mobile */
+      #expensesTable, #paydaysTable { overflow-x: auto; }
 
       /* Edit form rows stay stacked */
       .edit-form .row { flex-direction: column; }
