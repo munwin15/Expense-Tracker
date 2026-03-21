@@ -80,6 +80,60 @@
     .edit-form .row { margin-bottom: 0; }
     .edit-form .form-group { margin-bottom: 8px; }
     .edit-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+    /* ── Mobile ────────────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .container { padding: 12px; }
+      h1 { font-size: 1.3rem; margin-bottom: 16px; }
+      h2 { font-size: 0.85rem; margin-bottom: 10px; }
+
+      /* Stack all two-column grids */
+      .top-grid { grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }
+
+      /* Stack form rows vertically */
+      .row { flex-direction: column; gap: 0; }
+      .row .form-group { flex: unset; }
+
+      /* Cards */
+      .card { padding: 14px; border-radius: 10px; margin-bottom: 12px; }
+
+      /* Toolbar */
+      .toolbar { flex-direction: column; gap: 8px; margin-bottom: 12px; }
+      .toolbar .btn { width: 100%; text-align: center; padding: 12px; }
+
+      /* Bigger touch targets for action buttons */
+      .btn-danger, .btn-edit { padding: 8px 14px; font-size: 0.82rem; }
+      .btn-primary { padding: 12px; font-size: 0.95rem; }
+
+      /* Inputs */
+      input, select { padding: 11px 12px; font-size: 1rem; }
+
+      /* Tables — allow horizontal scroll, tighten padding */
+      th { padding: 8px 10px; font-size: 0.72rem; }
+      td { padding: 8px 10px; font-size: 0.82rem; }
+
+      /* Forecast — show as cards instead of wide table */
+      #forecastBody tr.payday-row { display: block; border-radius: 10px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+      #forecastBody tr.payday-row td { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #dce8f7; padding: 10px 14px; font-size: 0.85rem; }
+      #forecastBody tr.payday-row td:first-child { border-left: none; background: #2c82c9; color: white; font-weight: 700; font-size: 0.9rem; }
+      #forecastBody tr.payday-row td::before { content: attr(data-label); font-size: 0.72rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.4px; margin-right: 10px; white-space: nowrap; flex-shrink: 0; }
+      #forecastBody tr.payday-row td:first-child::before { color: rgba(255,255,255,0.7); }
+      #forecastBody tr.payday-row td:last-child { border-bottom: none; font-size: 1rem; }
+      #forecastBody .empty-row { display: table-row; }
+      #forecastBody .empty-row td { display: table-cell; }
+
+      /* Edit form rows stay stacked */
+      .edit-form .row { flex-direction: column; }
+      .edit-actions { flex-direction: column; }
+      .edit-actions .btn-cancel { text-align: center; }
+
+      /* Income input wider on mobile */
+      .income-input { width: 90px; font-size: 1rem; }
+
+      /* Forecast header */
+      .forecast-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .forecast-header select { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -670,12 +724,12 @@
 
         return `
           <tr class="payday-row">
-            <td>${fmt(row.date)}</td>
-            <td>${esc(row.label)}</td>
-            <td>${incomeInput}</td>
-            <td>${prevCell}</td>
-            <td>${expCell}</td>
-            <td class="${bClass} balance-total">${row.balance >= 0 ? '+' : ''}$${row.balance.toFixed(2)}</td>
+            <td data-label="Payday">${fmt(row.date)}</td>
+            <td data-label="Source">${esc(row.label)}</td>
+            <td data-label="Income">${incomeInput}</td>
+            <td data-label="Remaining">${prevCell}</td>
+            <td data-label="Expenses">${expCell}</td>
+            <td data-label="Net Balance" class="${bClass} balance-total">${row.balance >= 0 ? '+' : ''}$${row.balance.toFixed(2)}</td>
           </tr>`
       }).join('');
     }
