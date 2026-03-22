@@ -155,6 +155,60 @@
       .forecast-header { flex-direction: column; align-items: flex-start; gap: 8px; }
       .forecast-header select { width: 100%; }
     }
+
+    /* ── Dark Theme ─────────────────────────────────────────────────────────── */
+    body.dark { background: #0f1117; color: #e0e2f0; }
+    body.dark .card { background: #1a1d26; box-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+    body.dark h1, body.dark h2 { color: #c8cde0; }
+    body.dark label { color: #8b92a5; }
+    body.dark input, body.dark select { background: #22253a; border-color: #2a2d3a; color: #e0e2f0; }
+    body.dark input:focus, body.dark select:focus { border-color: #3498db; background: #1e2238; }
+    body.dark th { background: #1e2130; color: #8b92a5; border-bottom-color: #2a2d3a; }
+    body.dark td { border-bottom-color: #22253a; }
+    body.dark .payday-row td { background: #1a2a40 !important; border-color: #2a4060; }
+    body.dark .payday-row td:first-child { border-left-color: #3498db; }
+    body.dark .edit-row td { background: #1c1c10 !important; border-color: #7a6010; }
+    body.dark .section-header { border-color: #22253a; }
+    body.dark .toggle-icon { color: #555; }
+    body.dark .btn-cancel { border-color: #333; color: #666; }
+    body.dark .btn-cancel:hover { background: #22253a; }
+    body.dark .acct-tag { background: #22253a; color: #8b92a5; border-color: #333; }
+    body.dark .badge-daily     { background: #2a2510; color: #c9a020; border-color: #5a4a10; }
+    body.dark .badge-weekly    { background: #102030; color: #5aabdb; border-color: #204060; }
+    body.dark .badge-bi-weekly { background: #102015; color: #3ab870; border-color: #205030; }
+    body.dark .badge-monthly   { background: #201028; color: #b070d0; border-color: #502070; }
+    body.dark .badge-yearly    { background: #201508; color: #c08030; border-color: #604010; }
+    body.dark .badge-one-time  { background: #1e2030; color: #8090a0; border-color: #3a4050; }
+    body.dark .carry-pos { background: #102015; border-color: #205030; }
+    body.dark .carry-neg { background: #200f10; border-color: #602020; }
+    body.dark .carry-none { color: #444860; }
+    body.dark .expense-sub { border-bottom-color: #22253a; }
+    body.dark .exp-name { color: #c0c5d8; }
+    body.dark .exp-date { color: #555870; }
+    body.dark .no-expenses { color: #444860; }
+    body.dark .income-input { border-bottom-color: #2a6040; color: #3ab870; background: transparent; }
+    body.dark .btn-danger { border-color: #c0392b; color: #e05040; }
+    body.dark .btn-danger:hover { background: #c0392b; color: white; }
+    body.dark .btn-edit { border-color: #2a70bb; color: #5aabdb; }
+    body.dark .btn-edit:hover { background: #2a70bb; color: white; }
+    body.dark .user-info { color: #8b92a5; }
+    body.dark .btn-signout { border-color: #333; color: #666; }
+    body.dark .btn-signout:hover { border-color: #e74c3c; color: #e74c3c; }
+    body.dark .empty-row td { color: #444860; }
+    body.dark .payday-source { opacity: 0.6; }
+    body.dark .exp-summary { color: #e05040; }
+    body.dark .exp-toggle-arrow { color: #666; }
+    body.dark #authOverlay { background: #0f1117; }
+    body.dark .auth-card { background: #1a1d26; }
+    body.dark .auth-card h2 { color: #c8cde0; }
+    body.dark .auth-card p { color: #8b92a5; }
+    body.dark .btn-google { background: #22253a; border-color: #2a2d3a; color: #e0e2f0; }
+    body.dark .btn-google:hover { background: #2a2d3a; }
+    body.dark .btn-import { border-color: #27ae60 !important; color: #3ab870 !important; }
+    body.dark .btn-import:hover { background: #102015 !important; }
+    body.dark .btn-theme { border-color: #2a2d3a; color: #8b92a5; }
+    .btn-theme { background: none; border: 1.5px solid #ddd; color: #666; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 1rem; line-height: 1; }
+    .btn-theme:hover { border-color: #aaa; }
   </style>
 </head>
 <body>
@@ -180,6 +234,7 @@
         <span id="userName"></span>
         <button class="btn-signout" onclick="signOut()">Sign Out</button>
       </div>
+      <button class="btn-theme" id="themeToggle" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
       <input type="file" id="importInput" accept=".json" onchange="importData(event)">
       <button class="btn btn-import" onclick="document.getElementById('importInput').click()">⬆ Import Data</button>
       <button class="btn btn-export" onclick="exportData()">⬇ Export Data</button>
@@ -1041,7 +1096,22 @@
       reader.readAsText(file);
     }
 
+    // ── Dark Theme ─────────────────────────────────────────────────────────
+    function toggleTheme() {
+      const dark = document.body.classList.toggle('dark');
+      localStorage.setItem('et_theme', dark ? 'dark' : 'light');
+      document.getElementById('themeToggle').textContent = dark ? '☀️' : '🌙';
+    }
+
+    function restoreTheme() {
+      if (localStorage.getItem('et_theme') === 'dark') {
+        document.body.classList.add('dark');
+        document.getElementById('themeToggle').textContent = '☀️';
+      }
+    }
+
     // ── Init ───────────────────────────────────────────────────────────────
+    restoreTheme();
     document.getElementById('paydayNextDate').value = todayStr();
     updateExpenseDateFields();
 
