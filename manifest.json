@@ -1,6 +1,6 @@
 {
-  "name": "Expense Tracker & Forecaster",
-  "short_name": "Expenses",
+  "name": "Financial Forecaster",
+  "short_name": "Forecaster",
   "description": "Track and forecast your recurring expenses and paydays",
   "start_url": "./index.html",
   "scope": "./",
